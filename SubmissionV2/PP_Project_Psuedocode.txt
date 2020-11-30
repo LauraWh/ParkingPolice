@@ -1,0 +1,507 @@
+#Parking Police
+#written by Leon Harmon, Moya Clarke & Laura Whelan
+
+#[1] https://stackoverflow.com/questions/17485747/how-to-convert-a-nested-list-into-a-one-dimensional-list-in-python
+#===================================================
+#Import libraries needed to run program
+#===================================================
+import numpy library
+import cv2 library
+from matplotlib library
+import easygui
+import os
+from collections import Iterable [1]
+#===================================================
+#0.5 Declare Functions in use for Program
+#===================================================
+print('')
+print out '0.5. Declaring Functions...'
+
+#[1]
+define function 'flatten'
+     for the number of items in list:
+         check if item in list is iterable:
+             put x into list:
+                 return x
+         else:        
+             return item
+
+#===================================================
+#1. Read in Input Images
+#===================================================
+Print Out Statement '1. Read in Images...'
+
+Read in image of Blank Car Park
+Read in Occupied Car Park Image
+
+Make a Copy of Occupied Car Park Image
+
+#===================================================
+#2. Grayscale Image and Thresholding
+#===================================================
+Print Out Statement '2. Grayscale Images...' 
+
+Convert Blank Car Park to Greyscale
+Convert Occupied Car Park Image to Greyscale
+
+Print Out Statement '2.5. Thresholding...'
+
+Thresholding Blank Car Park
+Inverted Thresholding Blank Car Park
+Thresholding Occupied Car Park Image
+#===================================================
+#3. Line Detection Empty Carpark 
+#===================================================
+Print Out Statement '3. Line Detection...'
+
+Find Occupied Car Park Image height in pixels
+Find Occupied Car Park Image width in pixels
+
+if height is more than width:
+    length=width
+if width more than or equal to height:
+    length=height
+
+Canny Edge Detection for Blank Car Park
+
+Getting Hough Lines Transform of Canny Edges
+
+If there are lines in the Image:
+	Draw them using drawContours method
+    
+    #===================================================
+    #4. Detect Car Park Area From Lines
+    #===================================================
+    # Find top left and bottom right car park corners
+    # (by finding the smallest and largest x and y values)
+    print('4. Car Park Area Detection...')#Bug Check Print
+    
+    Define Length of Lines
+    for the number of Lines:
+        if certain Co-Ordinate in Lines<=x1:
+            x1=Co-Ordinate in Lines
+    #print('l ',x1)
+    for the number of Lines:
+        if certain Co-Ordinate in Lines>=x2:
+            x2=Co-Ordinate in Lines
+    #print('r ',x2)
+    for the number of Lines:
+        if certain Co-Ordinate in Lines>=y1:
+            y1=Co-Ordinate in Lines
+    #print('d ',y1)
+    for the number of Lines:
+        if certain Co-Ordinate in Lines<=y2:
+            y2=Co-Ordinate in Lines
+    #================================================
+    
+
+#===================================================
+#5. Draw Carpark Rectangle (Visual only)
+#===================================================   
+Print Out Statement '5. Draw Car Parking Area...'
+
+Draw a Rectangle using Corners (cv2.rectangle)
+  
+#===================================================
+#6. Crop All Images To Carpark Area
+#===================================================  
+Print Out Statement '6. Crop to Car Parking Area...'
+
+Crop Image to Car Parking Spaces in Occupied Car Park Image (Original Image)
+Crop Image to Car Parking Spaces in Blank Car Park Image (Original Image)
+Crop Image to Car Parking Spaces in Blank Car Park Image (Threshold Image)
+Crop Image to Car Parking Spaces in Blank Car Park Image (Inverted Threshold Image)
+Crop Image to Car Parking Spaces in Occupied Car Park Image (Threshold Image)   
+
+#===================================================
+#7. Subtract Full Image Threshold From Empty Carpark Threshold
+#=================================================== 
+Print Out Statement '7. Subtracting Full Image Threshold From Empty Carpark Threshold...'
+
+Subtract the Parking Space Boundaries from the Image to Isolate the Vehicles
+
+
+#===================================================
+#8. Plot Section 7
+#===================================================
+Print Out Statement '8. Plotting Previous Section...'
+
+Plot Cropped Occupied Car Park Image (Threshold Image) 
+Plot Cropped Blank Car Park Image (Threshold Image) 
+Plot Isolated Cars Image
+
+#===================================================
+#9. Prepare for Contours
+#===================================================
+Print Out Statement '9. Preparing for Contours...'
+
+Find Blank Car Park Image (Inverted Threshold Image) height in pixels
+Find Blank Car Park Image (Inverted Threshold Image) width in pixels
+
+Create Blank Images
+
+Define Opening Parameters
+
+#===================================================
+#10. Apply Contours to Cars
+#===================================================
+Print Out Statement '10. Applying Car Contours...'
+
+Applying Opening Morphology to Isolated Cars Image
+Find Outlines of Isolated Cars in Isolated Cars Image
+Make Items in the Outlines of Isolated Cars List
+Define Array for Car 1
+Define Array for Car 2
+Define Array for Car 3
+Define Array for Car 4
+Define Array for Car 5
+Define Array for Car 6
+
+Print Out Statement '10.5. Locating Each Car Individually...'
+
+i=1
+For Every Car Outline in the Image
+    Find the Co-Ordinates of Outlines
+    If the First Car:
+        Put it in the First Car Array
+	If the Second Car:
+        Put it in the Second Car Array
+	If the Third Car:
+        Put it in the Third Car Array
+	If the Fourth Car:
+        Put it in the Fourth Car Array
+	If the Fifth Car:
+        Put it in the Fifth  Car Array
+	If the Sixth Car:
+        Put it in the Sixth Car Array        
+    i=i+1
+
+#===================================================
+#11. Apply Contours to Parking Area
+#===================================================
+Print Out Statement '11. Applying Contours to Parking Area...'
+
+Applying Opening Morphology to Blank Car Park Image to Isolate Lines
+Find Contours of Parking Space Lines
+
+
+#===================================================
+#12. Draw Contours and Combine
+#===================================================
+Print Out Statement '12. Drawing Contours and Combining Them...'
+
+Draw Contour of Cars onto Blank Image 1
+Draw Contour of Lines onto Blank Image 2
+Add Car Contours and Line Contours together
+
+Print Out Statement '12.5 Plotting Contours...'
+Plot Car Conoturs
+Plot Line Contours
+Plot Combined Contours
+
+#===================================================
+#13. Greyscale Combined_contoured Image, threshold to find intersect coords
+#===================================================
+Print Out Statement '13. Searching Car-Line Intersection Co-ordinates...'
+
+Convert Combined Contours Image to Greyscale
+Threshold Combined Contours Image 
+
+Create intersect_coords Array 
+for width of Combined Contours Image:
+   for height of Combined Contours Image:
+     if value of a Pixel in Combined Contours Image =255:
+        Save Location of Pixel
+        Make Array from Location of Pixel
+        
+#===================================================
+#14. Prepare intersect coord lists
+#===================================================
+Print Out Statement '14. Preparing Intersect Co-ords Lists...'
+
+Feed Location of Pixel List into Function
+Define Length of List
+
+Make List of X Co-Ordinates
+Make List of Y Co-Ordinates
+for Length of List of X Co-Ordinates:
+    if Iteration Number is Divisable by 2: 
+        Add Co-Ordinate X Value to X List
+    else:
+        Add Co-Ordinate Y Value to Y List
+        
+Print Out Statement'==================================================='
+Print Out Statement'intersect_coords_list_x\n', intersect_coords_list_x
+Print Out Statement'==================================================='
+Print Out Statement'intersect_coords_list_y\n', intersect_coords_list_y      
+Print Out Statement'===================================================')
+
+#===================================================
+#15. Arrange car contours into lists for x and y co-ords
+#===================================================
+Print Out Statement'15. Arranging Car Contours Into Lists for x and y Co-ords...'
+
+Use 'flatten' Function for Car 1
+Use 'flatten' Function for Car 2
+Use 'flatten' Function for Car 3
+Use 'flatten' Function for Car 4
+Use 'flatten' Function for Car 5
+Use 'flatten' Function for Car 6
+
+# car 1--------------------------------------------------------------
+Define Length of Car1_list
+Create Array for Car1_list X Co-Ordinates
+Create Array for Car1_list Y Co-Ordinates
+for the amount of values in Car1_List:
+    if i5 is an even number: 
+        Add X Co-Ordinate for Car1_list X List
+    else:
+        Add Y Co-Ordinate for Car1_list Y List
+
+# car 2--------------------------------------------------------------
+Define Length of Car2_list
+Create Array for Car2_list X Co-Ordinates
+Create Array for Car2_list Y Co-Ordinates
+for the amount of values in Car2_List:
+    if i5 is an even number: 
+        Add X Co-Ordinate for Car2_list X List
+    else:
+        Add Y Co-Ordinate for Car2_list Y List
+# car 3--------------------------------------------------------------
+Define Length of Car3_list
+Create Array for Car3_list X Co-Ordinates
+Create Array for Car3_list Y Co-Ordinates
+for the amount of values in Car3_List:
+    if i5 is an even number: 
+        Add X Co-Ordinate for Car3_list X List
+    else:
+        Add Y Co-Ordinate for Car3_list Y List
+# car 4--------------------------------------------------------------
+Define Length of Car4_list
+Create Array for Car4_list X Co-Ordinates
+Create Array for Car4_list Y Co-Ordinates
+for the amount of values in Car4_List:
+    if i5 is an even number: 
+        Add X Co-Ordinate for Car4_list X List
+    else:
+        Add Y Co-Ordinate for Car4_list Y List
+# car 5--------------------------------------------------------------
+Define Length of Car5_list
+Create Array for Car5_list X Co-Ordinates
+Create Array for Car5_list Y Co-Ordinates
+for the amount of values in Car5_List:
+    if i5 is an even number: 
+        Add X Co-Ordinate for Car5_list X List
+    else:
+        Add Y Co-Ordinate for Car5_list Y List
+# car 6--------------------------------------------------------------
+Define Length of Car6_list
+Create Array for Car6_list X Co-Ordinates
+Create Array for Car6_list Y Co-Ordinates
+for the amount of values in Car6_List:
+    if i5 is an even number: 
+        Add X Co-Ordinate for Car6_list X List
+    else:
+        Add Y Co-Ordinate for Car6_list Y List
+#------------------------------------------------------------------
+
+#===================================================
+#16. Print out each car list with list of x and y coords
+#===================================================
+Print Out Statement '16. Printing Out Each Car List with a List of x and y Co-ords...')#Bug Check Print
+
+# print('==================================')
+# print('car 1_list_x',car1_list_x)
+# Define Length of car 1_len_x 
+# print('car 1_len_x ',car1_len_x)
+# print('==================================')
+# print('car 1_list_y',car1_list_y)
+# Define Length of car 1_len_y  
+# print('car 1_len_y ',car1_len_y)
+# print('==================================')
+
+
+# print('==================================')
+# print('car 2_list_x',car2_list_x)
+# Define Length of car2_len_x 
+# print('car 2_len_x ',car2_len_x)
+# print('==================================')
+# print('car 2_list_y',car2_list_y)
+# Define Length of car 2_len_y 
+# print('car 2_len_y ',car2_len_y)
+# print('==================================')
+
+
+# print('==================================')
+# print('car 3_list_x',car3_list_x)
+# Define Length of car 3_len_x 
+# print('car 3_len_x ',car3_len_x)
+# print('==================================')
+# print('car 3_list_y',car3_list_y)
+# Define Length of car 3_len_y 
+# print('car 3_len_y ',car3_len_y)
+# print('==================================')
+
+
+# print('==================================')
+# print('car 4_list_x',car4_list_x)
+# Define Length of car 4_len_x 
+# print('car 4_len_x ',car4_len_x)
+# print('==================================')
+# print('car 4_list_y',car4_list_y)
+# Define Length of car 4_len_y 
+# print('car 4_len_y ',car4_len_y)
+# print('==================================')
+
+#------------------------------------------------------------------
+#need to check if any x coords are in intersect (0,2,4...) if so,
+# then check the y's (1,3,5...) matching the matched x 
+#e.g. if carlist_x[0] matched a coord for an x coord in intersect (intersect_coords_list_x[34]), 
+# then check if carlist_y[0] matches intersect_coords_list_y[34]
+#----------------------------------------------------------------------------
+
+#===================================================
+#17. Check which cars broke the line
+#===================================================
+print('17. Checking Which Cars Broke the Line...')
+intersect_list_x_len=len(intersect_coords_list_x)
+intersect_list_y_len=len(intersect_coords_list_y)
+
+contour_allowance=1
+output_option=1
+
+# car 1______________________________________________________ 
+Print out statement 'car 1 __________________________________________'
+Define length of car1_list_x
+Define length of car1_list_y
+
+for the number of elements in intersect_list_x:
+    for the number of elements in car1_list_x:
+        if the current element in car1_list_x== current element in intersect_coords_list_x:
+            if the current element in car1_list_y== the current element in intersect_coords_list_y:
+                #draw car contour here on black background
+                Set output_option to be 2
+		Draw the contour of car 1 to be in the intersect on the image "Blank4"
+                Print out statement '      Car 1 Point Co-ordinates:  	  car1 x coordinate,  car1 y coordinate '
+                Print out statement '      Intersect Co-ordinate Crossed: intersect x coord,  intersect y coords '
+
+            else if the current element in car1_list_y== the current element in intersect_coords_list_y+contour_allowance:
+                #draw car contour here on black background
+                Set output_option to be 2
+                Draw the contour of car 1 to be in the intersect on the image "Blank4"
+                Print out statement '      Car 1 Point Co-ordinates:  	  car1 x coordinate,  car1 y coordinate '
+                Print out statement '      Intersect Co-ordinate Crossed: intersect x coord,  intersect y coords '
+                
+            else if the current element in car1_list_y== the current element in intersect_coords_list_y-contour_allowance:
+                #draw car contour here on black background
+                Set output_option to be 2
+                Draw the contour of car 1 to be in the intersect on the image "Blank4"
+                Print out statement '      Car 1 Point Co-ordinates:  	  car1 x coordinate,  car1 y coordinate '
+                Print out statement '      Intersect Co-ordinate Crossed: intersect x coord,  intersect y coords '
+
+        if the current element in car1_list_x== current element in intersect_coords_list_x + contour_allowance:
+            if the current element in car1_list_y== the current element in intersect_coords_list_y:
+                #draw car contour here on black background
+                Set output_option to be 2
+		Draw the contour of car 1 to be in the intersect on the image "Blank4"
+                Print out statement '      Car 1 Point Co-ordinates:  	  car1 x coordinate,  car1 y coordinate '
+                Print out statement '      Intersect Co-ordinate Crossed: intersect x coord,  intersect y coords '
+
+            else if the current element in car1_list_y== the current element in intersect_coords_list_y+contour_allowance:
+                #draw car contour here on black background
+                Set output_option to be 2
+                Draw the contour of car 1 to be in the intersect on the image "Blank4"
+                Print out statement '      Car 1 Point Co-ordinates:  	  car1 x coordinate,  car1 y coordinate '
+                Print out statement '      Intersect Co-ordinate Crossed: intersect x coord,  intersect y coords '
+                
+            else if the current element in car1_list_y== the current element in intersect_coords_list_y-contour_allowance:
+                #draw car contour here on black background
+                Set output_option to be 2
+                Draw the contour of car 1 to be in the intersect on the image "Blank4"
+                Print out statement '      Car 1 Point Co-ordinates:  	  car1 x coordinate,  car1 y coordinate '
+                Print out statement '      Intersect Co-ordinate Crossed: intersect x coord,  intersect y coords '
+
+         if the current element in car1_list_x== current element in intersect_coords_list_x - contour_allowance:
+            if the current element in car1_list_y== the current element in intersect_coords_list_y:
+                #draw car contour here on black background
+                Set output_option to be 2
+		Draw the contour of car 1 to be in the intersect on the image "Blank4"
+                Print out statement '      Car 1 Point Co-ordinates:  	  car1 x coordinate,  car1 y coordinate '
+                Print out statement '      Intersect Co-ordinate Crossed: intersect x coord,  intersect y coords '
+
+            else if the current element in car1_list_y== the current element in intersect_coords_list_y+contour_allowance:
+                #draw car contour here on black background
+                Set output_option to be 2
+                Draw the contour of car 1 to be in the intersect on the image "Blank4"
+                Print out statement '      Car 1 Point Co-ordinates:  	  car1 x coordinate,  car1 y coordinate '
+                Print out statement '      Intersect Co-ordinate Crossed: intersect x coord,  intersect y coords '
+                
+            else if the current element in car1_list_y== the current element in intersect_coords_list_y-contour_allowance:
+                #draw car contour here on black background
+                Set output_option to be 2
+                Draw the contour of car 1 to be in the intersect on the image "Blank4"
+                Print out statement '      Car 1 Point Co-ordinates:  	  car1 x coordinate,  car1 y coordinate '
+                Print out statement '      Intersect Co-ordinate Crossed: intersect x coord,  intersect y coords '
+
+FROM LINES 496 to 830, THE ABOVE PSEUDO CODE IS REPEATED FOR CAR 2,3,4,5, and CAR 6.
+
+#===================================================
+#18. Produce final images
+#===================================================
+Print Out Statement '18. Producing Final Images...'
+
+# if blank4 is entirely black theres no bad parking so show good parking output
+if output_option==1:
+    #print out alternate final output
+    Print Out Statement '18.5. Print Out Alternate Final Output'
+    Read in 'Good Ending' Output
+    Convert 'Good Ending' Output to RGB
+    Convert Original Occupied Parking Image 
+    # Show 'Good Ending' Image in cv2
+    # Wait for User Key Input 
+    
+	Plot Original Image
+	Plot 'Good Ending' Image
+
+# if blank4 is not entirely black,i.e. has contours on it, show output for boundaries broken     
+elif output_option==2:     
+
+    Print Out Statement '18.5. Print Out Wasted Final Output'
+    Convert Original Image to RGB
+    
+    Reading in 'Bad Ending' Image
+    Define shape of 'Bad Ending' Image
+    Make a copy of 'Bad Ending' Image
+
+    Define 'Blank Image', ie. pure black background
+    Define shape of 'Blank Image'
+    Make a copy of 'Blank Image'
+
+    Make Scale Ratio for Width of Images
+    Make Scale Ratio for Height of Images
+
+    Define Width of 'Bad Ending' Image (with Ratio)
+    Define Height of 'Bad Ending' Image (with Ratio)
+    Define Dimensions of 'Bad Ending' Image 
+	Resize 'Bad Ending' Image 
+
+    Define Upper Limits of Mask
+    Define Lower Limits of Mask
+      
+	Mask Image
+    Add Image with Mask
+
+    Create Inverse Mask
+    Create Background Mask
+
+    Define Weight of 'Bad Ending' Image
+    Define Weight of Background Image
+    Define Gamma (for adding together)
+    Add two Images together
+    
+    Convert Combined Image to RGB
+	Plot Original Image
+	Plot 'Bad Ending' Image
+#==============================================================================================================
+
+Show all figures

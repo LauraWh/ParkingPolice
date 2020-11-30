@@ -1,0 +1,11 @@
+User Instructions:
+
+This code requires two input images:
+1. One of an empty car park from an overhead view,
+2. One of the same car park, but with cars parked in the parking spaces.
+
+To run this code using your input images, change the input images in Section 1.
+Empty = image of empty car park from an overhead view.
+Full = image of same car park, but with cars parked in the parking spaces.
+
+Then run the code, and your output image will be produced.
